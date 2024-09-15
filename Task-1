@@ -1,0 +1,83 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class StudentGradeTracker {
+    private ArrayList<Double> grades;
+
+    public StudentGradeTracker() {
+        grades = new ArrayList<>();
+    }
+
+    // Method to input grades
+    public void inputGrades() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter grades (type 'done' to finish):");
+
+        while (true) {
+            String input = scanner.nextLine();
+            if (input.equalsIgnoreCase("done")) {
+                break;
+            }
+
+            try {
+                double grade = Double.parseDouble(input);
+                if (grade < 0 || grade > 100) {
+                    System.out.println("Please enter a valid grade (0-100).");
+                } else {
+                    grades.add(grade);
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a numeric grade or 'done' to finish.");
+            }
+        }
+    }
+
+    // Method to calculate average grade
+    public double calculateAverage() {
+        if (grades.isEmpty()) {
+            return 0;
+        }
+        double sum = 0;
+        for (double grade : grades) {
+            sum += grade;
+        }
+        return sum / grades.size();
+    }
+
+    // Method to get letter grade
+    public String getLetterGrade(double average) {
+        if (average >= 90) {
+            return "A";
+        } else if (average >= 80) {
+            return "B";
+        } else if (average >= 70) {
+            return "C";
+        } else if (average >= 60) {
+            return "D";
+        } else {
+            return "F";
+        }
+    }
+
+    // Method to calculate GPA (assuming a 4.0 scale)
+    public double calculateGPA(double average) {
+        return (average / 100) * 4.0;
+    }
+
+    // Method to display results
+    public void displayResults() {
+        double average = calculateAverage();
+        String letterGrade = getLetterGrade(average);
+        double gpa = calculateGPA(average);
+
+        System.out.printf("Average Grade: %.2f\n", average);
+        System.out.println("Letter Grade: " + letterGrade);
+        System.out.printf("GPA: %.2f\n", gpa);
+    }
+
+    public static void main(String[] args) {
+        StudentGradeTracker tracker = new StudentGradeTracker();
+        tracker.inputGrades();
+        tracker.displayResults();
+    }
+}
